@@ -1,0 +1,14 @@
+{
+  "name": "founder",
+  "description": "Eleven commands that test a business before you launch it: a board that applies three published frameworks, a competitor scout, a panel of simulated buyers, pricing, the offer, a CFO for the real margins, marketing, brand, operations, the launch, and the business plan with a verdict.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Brian MacDonald",
+    "url": "https://github.com/bmacbuilds"
+  },
+  "homepage": "https://github.com/bmacbuilds/founder-skill",
+  "repository": "https://github.com/bmacbuilds/founder-skill",
+  "license": "MIT",
+  "keywords": ["claude-code", "claude-skills", "startup", "business-plan", "pricing", "founder", "small-business"],
+  "skills": "./"
+}

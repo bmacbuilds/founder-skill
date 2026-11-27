@@ -1,0 +1,18 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "founder-skill",
+  "description": "Founder by Brian MacDonald",
+  "owner": {
+    "name": "Brian MacDonald",
+    "url": "https://github.com/bmacbuilds"
+  },
+  "plugins": [
+    {
+      "name": "founder",
+      "description": "Eleven commands that test a business before you launch it: a board that applies three published frameworks, a competitor scout, a panel of simulated buyers, pricing, the offer, a CFO for the real margins, marketing, brand, operations, the launch, and the business plan with a verdict.",
+      "source": "./",
+      "category": "productivity",
+      "homepage": "https://github.com/bmacbuilds/founder-skill"
+    }
+  ]
+}
