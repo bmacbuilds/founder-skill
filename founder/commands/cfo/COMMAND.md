@@ -23,6 +23,16 @@ python3 "<this command's folder>/unit_economics.py" founder/numbers.json --out f
 
 ## Step 1: gather the inputs
 
+**Run first?** When this is the first Founder command they use and `founder/idea.md` is not there yet, write it from
+what they told you before anything else, and say you saved it: the commands after this one start from it.
+
+Ask for each of these in a message of its own, the name first, and only for what they have not told you:
+
+- **The business's name.** With none given, ask for it; if it has none yet, the report says "your business".
+- **Where it sells,** the state or country. The price here is before tax. Where tax is added at the till (US sales
+  tax), use the price before it; where shelf prices include it (VAT in the UK and the EU), take the tax out first.
+  Tax collected is never the business's money, so it is not in these numbers. Their accountant confirms the rate.
+
 Write `founder/numbers.json` (shape: `example.json` in this folder, a walk-in
 matcha café). It needs:
 
@@ -31,7 +41,7 @@ matcha café). It needs:
 | `business` | the business's name, at the top of the report |
 | `unit` | what one sale is: a cup, an order, a client-month, a seat |
 | `price` | price per unit before tax |
-| `variable` | the cost of ONE unit: ingredients, packaging, shipping, card fees, per-sale commissions |
+| `variable` | the cost of ONE unit: ingredients, packaging, shipping, card fees, per-sale commissions. A cost that is a share of the price takes `percent_of_price` (a card fee of 2.9% + $0.30 is `{"label": "card fees", "percent_of_price": 2.9, "cost": 0.30}`), so every what-if price works it out again: never write it as one fixed amount |
 | `fixed_monthly` | what you pay every month regardless: rent, salaries, software, insurance |
 | `startup` | one-off spend before opening: deposits, build-out, equipment, first inventory, launch ads |
 | `plan_per_day` | the volume once it is up and running |
@@ -64,14 +74,19 @@ python3 "<this command's folder>/unit_economics.py" founder/numbers.json --out f
 ```
 
 It writes: the per-unit table and the contribution (what each sale leaves after
-its own costs), fixed costs, the break-even in units a day, the profit margin at
+its own costs), fixed costs, the break-even in units a day on average, with the whole
+units that cover it, the profit margin at
 the plan volume, year 1 month by month, the year 1 operating profit and the result
 after the startup spend, the cash needed before it pays for itself, the month the
 startup money is earned back, and a what-if table (price -10%, volume -20%, unit
 costs +15%). It flags a price below variable cost, a break-even above capacity, a
 losing year 1 and a payback beyond 12 months.
 
-What-ifs without editing the file:
+**Every figure you give them comes from a run of the tool,** never from your head: for each case you show (a slower
+start, a full van, another price), run it with `--volume` or `--price` and read its numbers out.
+
+What-ifs without editing the file. Their report opens by saying it is a what-if and
+what it changed, and says "at this what-if" where the plan's says "at your plan":
 
 ```bash
 python3 "<this command's folder>/unit_economics.py" founder/numbers.json --price 7.00

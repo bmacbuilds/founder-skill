@@ -43,6 +43,16 @@ SECTIONS = [  # (file in founder/, heading, which skill writes it)
 ]
 
 
+
+def breakeven_words(be, unit):
+    """'1.33 grooms a day on average (2 in whole grooms)', or '3 grooms a day' when it is exact: the worked-out figure
+    first, as the CFO's report gives it, then the whole units that cover it."""
+    whole = math.ceil(be)
+    if abs(be - whole) <= 1e-9:
+        return "%s %s a day" % ("{:,.0f}".format(whole), unit if whole == 1 else unit + "s")
+    return "%s %ss a day on average (%s in whole %ss)" % (("{:,.2f}".format(be)).rstrip("0").rstrip("."), unit,
+                                                         "{:,.0f}".format(whole), unit)
+
 def _load_unit_economics():
     path = os.path.join(HERE, "..", "cfo", "unit_economics.py")
     spec = importlib.util.spec_from_file_location("founder_unit_economics", path)
@@ -85,8 +95,8 @@ def verdict(d, min_buy_rate=0.25):
         be, cap = numbers["breakeven_per_day"], numbers["capacity_per_day"]
         if cap is not None:
             fits = not math.isinf(be) and be <= float(cap)
-            checks.append((fits, "Break-even is %s %ss a day against a capacity of %s." % (
-                "never reached" if math.isinf(be) else "{:,.0f}".format(math.ceil(be)), u, cap)))
+            checks.append((fits, "Break-even is %s against a capacity of %s." % (
+                "never reached" if math.isinf(be) else breakeven_words(be, u), cap)))
     raw = _read(os.path.join(d, "panel", "results.json"))
     if raw:
         panel = json.loads(raw)
@@ -123,7 +133,7 @@ def compile_plan(d, min_buy_rate=0.25):
         L += ["| key number | |", "| --- | ---: |",
               "| Price | $%.2f a %s |" % (numbers["price"], numbers["unit"]),
               "| Profit margin at plan | %.0f%% per %s |" % (numbers["margin_at_plan"] * 100, numbers["unit"]),
-              "| Break-even | %s %ss a day |" % ("never" if math.isinf(be) else "{:,.0f}".format(math.ceil(be)), numbers["unit"]),
+              "| Break-even | %s |" % ("never" if math.isinf(be) else breakeven_words(be, numbers["unit"])),
               "| Year 1 operating profit | $%s |" % "{:,.0f}".format(numbers["year1_profit"]),
               "| Startup spend | $%s |" % "{:,.0f}".format(numbers["startup"]),
               "| Cash needed before it pays for itself | $%s |" % "{:,.0f}".format(numbers["cash_needed"]),

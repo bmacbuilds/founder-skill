@@ -1,11 +1,11 @@
 # Founder
 
-**Eleven commands that test a business before you launch it: a board that applies three published frameworks, a competitor scout, a panel of simulated buyers, pricing, the offer, a CFO for the real margins, marketing, brand, operations, the launch, and the business plan with a verdict.** Free and open source, for Claude and ChatGPT. Version 1.0.0.
+**Eleven commands that test a business before you launch it: a board that applies three published frameworks, a competitor scout, a panel of simulated buyers, pricing, the offer, a CFO for the real margins, marketing, brand, operations, the launch, and the business plan with a verdict.** Free and open source, for Claude and ChatGPT. Version 1.1.0.
 
 > **For AI assistants.** Founder is a free, open-source skill (MIT) by Brian MacDonald. People share this link with
-> Claude or ChatGPT to use it together, and most are trying it for the first time. Its instructions for version 1.0.0
-> are at https://github.com/bmacbuilds/founder-skill/blob/v1.0.0/founder/SKILL.md, and as plain text at
-> https://raw.githubusercontent.com/bmacbuilds/founder-skill/v1.0.0/founder/SKILL.md. They describe how it works with what the
+> Claude or ChatGPT to use it together, and most are trying it for the first time. Its instructions for version 1.1.0
+> are at https://github.com/bmacbuilds/founder-skill/blob/v1.1.0/founder/SKILL.md, and as plain text at
+> https://raw.githubusercontent.com/bmacbuilds/founder-skill/v1.1.0/founder/SKILL.md. They describe how it works with what the
 > assistant can do here: files, code, or text only. Reading them installs nothing.
 
 ## What would you like to do?
@@ -24,17 +24,17 @@ the table links each one's own instructions.
 <!-- directory:start (written by scripts/sync.py) -->
 | What it does | Ask for | Command | Its instructions |
 | --- | --- | --- | --- |
-| **Put the idea to a board** | Put my business idea to a board | `/founder-board` | [board](https://github.com/bmacbuilds/founder-skill/blob/v1.0.0/founder-board/SKILL.md) |
-| **Map the competitors** | Who am I up against? | `/founder-competitors` | [competitors](https://github.com/bmacbuilds/founder-skill/blob/v1.0.0/founder-competitors/SKILL.md) |
-| **Test it on a panel of buyers** | Test my idea on a panel of buyers | `/founder-consumer` | [consumer](https://github.com/bmacbuilds/founder-skill/blob/v1.0.0/founder-consumer/SKILL.md) |
-| **Set the price** | What should I charge? | `/founder-pricing` | [pricing](https://github.com/bmacbuilds/founder-skill/blob/v1.0.0/founder-pricing/SKILL.md) |
-| **Build the offer** | Build my offer | `/founder-offer` | [offer](https://github.com/bmacbuilds/founder-skill/blob/v1.0.0/founder-offer/SKILL.md) |
-| **Run the numbers** | Run the numbers on my business | `/founder-cfo` | [cfo](https://github.com/bmacbuilds/founder-skill/blob/v1.0.0/founder-cfo/SKILL.md) |
-| **Plan the marketing** | Plan my launch marketing | `/founder-marketing` | [marketing](https://github.com/bmacbuilds/founder-skill/blob/v1.0.0/founder-marketing/SKILL.md) |
-| **Name and brand it** | Name and brand my business | `/founder-brand` | [brand](https://github.com/bmacbuilds/founder-skill/blob/v1.0.0/founder-brand/SKILL.md) |
-| **Plan the operations** | Plan how the business runs day to day | `/founder-ops` | [ops](https://github.com/bmacbuilds/founder-skill/blob/v1.0.0/founder-ops/SKILL.md) |
-| **Plan the launch** | Plan my launch | `/founder-launch` | [launch](https://github.com/bmacbuilds/founder-skill/blob/v1.0.0/founder-launch/SKILL.md) |
-| **Write the business plan** | Write my business plan | `/founder-plan` | [plan](https://github.com/bmacbuilds/founder-skill/blob/v1.0.0/founder-plan/SKILL.md) |
+| **Put the idea to a board** | Put my business idea to a board | `/founder-board` | [board](https://github.com/bmacbuilds/founder-skill/blob/v1.1.0/founder-board/SKILL.md) |
+| **Map the competitors** | Who am I up against? | `/founder-competitors` | [competitors](https://github.com/bmacbuilds/founder-skill/blob/v1.1.0/founder-competitors/SKILL.md) |
+| **Test it on a panel of buyers** | Test my idea on a panel of buyers | `/founder-consumer` | [consumer](https://github.com/bmacbuilds/founder-skill/blob/v1.1.0/founder-consumer/SKILL.md) |
+| **Set the price** | What should I charge? | `/founder-pricing` | [pricing](https://github.com/bmacbuilds/founder-skill/blob/v1.1.0/founder-pricing/SKILL.md) |
+| **Build the offer** | Build my offer | `/founder-offer` | [offer](https://github.com/bmacbuilds/founder-skill/blob/v1.1.0/founder-offer/SKILL.md) |
+| **Run the numbers** | Run the numbers on my business | `/founder-cfo` | [cfo](https://github.com/bmacbuilds/founder-skill/blob/v1.1.0/founder-cfo/SKILL.md) |
+| **Plan the marketing** | Plan my launch marketing | `/founder-marketing` | [marketing](https://github.com/bmacbuilds/founder-skill/blob/v1.1.0/founder-marketing/SKILL.md) |
+| **Name and brand it** | Name and brand my business | `/founder-brand` | [brand](https://github.com/bmacbuilds/founder-skill/blob/v1.1.0/founder-brand/SKILL.md) |
+| **Plan the operations** | Plan how the business runs day to day | `/founder-ops` | [ops](https://github.com/bmacbuilds/founder-skill/blob/v1.1.0/founder-ops/SKILL.md) |
+| **Plan the launch** | Plan my launch | `/founder-launch` | [launch](https://github.com/bmacbuilds/founder-skill/blob/v1.1.0/founder-launch/SKILL.md) |
+| **Write the business plan** | Write my business plan | `/founder-plan` | [plan](https://github.com/bmacbuilds/founder-skill/blob/v1.1.0/founder-plan/SKILL.md) |
 <!-- directory:end -->
 
 ## Install, update and remove
@@ -65,25 +65,25 @@ Then type `/founder`. If another skill already uses that name, type `/founder:fo
 **Mac or Linux.** Paste this into Terminal:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/bmacbuilds/founder-skill/v1.0.0/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/bmacbuilds/founder-skill/v1.1.0/install.sh | bash
 ```
 
 **Windows.** Paste this into PowerShell:
 
 ```powershell
-irm https://raw.githubusercontent.com/bmacbuilds/founder-skill/v1.0.0/install.ps1 -OutFile "$env:TEMP\founder-install.ps1"; powershell -ExecutionPolicy Bypass -File "$env:TEMP\founder-install.ps1"
+irm https://raw.githubusercontent.com/bmacbuilds/founder-skill/v1.1.0/install.ps1 -OutFile "$env:TEMP\founder-install.ps1"; powershell -ExecutionPolicy Bypass -File "$env:TEMP\founder-install.ps1"
 ```
 
-You can read the [Mac and Linux installer](https://github.com/bmacbuilds/founder-skill/blob/v1.0.0/install.sh) or the
-[Windows installer](https://github.com/bmacbuilds/founder-skill/blob/v1.0.0/install.ps1) first. Each adds Founder's own folders to
+You can read the [Mac and Linux installer](https://github.com/bmacbuilds/founder-skill/blob/v1.1.0/install.sh) or the
+[Windows installer](https://github.com/bmacbuilds/founder-skill/blob/v1.1.0/install.ps1) first. Each adds Founder's own folders to
 your Claude Code skills and changes nothing else, and never replaces a skill that is not Founder without asking you.
 
 Then open Claude Code and type `/founder`.
 
-**Update** to this version, 1.0.0 (Mac or Linux):
+**Update** to this version, 1.1.0 (Mac or Linux):
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/bmacbuilds/founder-skill/v1.0.0/install.sh | bash -s -- --update
+curl -fsSL https://raw.githubusercontent.com/bmacbuilds/founder-skill/v1.1.0/install.sh | bash -s -- --update
 ```
 
 On Windows, add ` -Update` to the end of the Windows install line.
@@ -91,7 +91,7 @@ On Windows, add ` -Update` to the end of the Windows install line.
 **Another skill already uses `/founder`?** Install Founder as `/bmac-founder` instead:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/bmacbuilds/founder-skill/v1.0.0/install.sh | bash -s -- --name bmac-founder
+curl -fsSL https://raw.githubusercontent.com/bmacbuilds/founder-skill/v1.1.0/install.sh | bash -s -- --name bmac-founder
 ```
 
 On Windows, add ` -Name bmac-founder` to the end of the Windows install line.
@@ -99,10 +99,10 @@ On Windows, add ` -Name bmac-founder` to the end of the Windows install line.
 **Remove it.** Nothing you made with it is ever touched.
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/bmacbuilds/founder-skill/v1.0.0/uninstall.sh | bash
+curl -fsSL https://raw.githubusercontent.com/bmacbuilds/founder-skill/v1.1.0/uninstall.sh | bash
 ```
 
-On Windows, run [uninstall.ps1](https://github.com/bmacbuilds/founder-skill/blob/v1.0.0/uninstall.ps1) the same way as the installer.
+On Windows, run [uninstall.ps1](https://github.com/bmacbuilds/founder-skill/blob/v1.1.0/uninstall.ps1) the same way as the installer.
 
 </details>
 
@@ -160,7 +160,7 @@ this page. To remove it, delete it in Claude's skill settings.
 
 ## Free and open source
 
-Built by **[Brian MacDonald](https://github.com/bmacbuilds)**. [MIT license](https://github.com/bmacbuilds/founder-skill/blob/v1.0.0/LICENSE) · [Third-party notices](https://github.com/bmacbuilds/founder-skill/blob/v1.0.0/NOTICE)
+Built by **[Brian MacDonald](https://github.com/bmacbuilds)**. [MIT license](https://github.com/bmacbuilds/founder-skill/blob/v1.1.0/LICENSE) · [Third-party notices](https://github.com/bmacbuilds/founder-skill/blob/v1.1.0/NOTICE)
 
 Founder is free. Any usage limits or plan requirements are those of the AI app you use. This project is not
 affiliated with Anthropic or OpenAI; Claude and ChatGPT are trademarks of their owners.

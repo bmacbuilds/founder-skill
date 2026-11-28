@@ -14,7 +14,7 @@ set -euo pipefail
 
 NAME="founder"
 FALLBACK="bmac-founder"
-RELEASE_URL="${FOUNDER_RELEASE_URL:-https://github.com/bmacbuilds/founder-skill/archive/refs/tags/v1.0.0.tar.gz}"
+RELEASE_URL="${FOUNDER_RELEASE_URL:-https://github.com/bmacbuilds/founder-skill/archive/refs/tags/v1.1.0.tar.gz}"
 MARKER=".founder-install"
 COMMANDS="board competitors consumer pricing offer cfo marketing brand ops launch plan"   # written by scripts/sync.py from skill.json
 FROM="" UPDATE=0 REPLACE=0 ASSUME_YES=0

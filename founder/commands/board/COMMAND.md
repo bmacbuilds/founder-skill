@@ -80,7 +80,7 @@ Score: <1-10> | Vote: FUND / FUND IF / PASS
 Read the three memos (they are short) and write `founder/board.md`:
 
 1. The vote, e.g. "2 fund if, 1 pass", and the average score.
-2. The risks more than one member raised: these go first.
+2. The risks more than one member raised: these go first. Name the members who raised each one, read from their memos, and say "all three" only when all three memos raise it.
 3. Every condition, merged, as a checklist the rest of the pack can tick off
    (the CFO, the consumer panel and pricing will test most of them).
 4. One paragraph: the strongest version of this business the board can see.

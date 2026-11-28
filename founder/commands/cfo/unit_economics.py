@@ -17,7 +17,11 @@ The input (see example.json in this folder):
     unit              what you sell one of: "cup", "order", "client-month"
     price             price per unit, before tax
     variable          [{label, cost}]  cost of ONE unit: ingredients, packaging,
-                      shipping, card fees, a per-unit commission
+                      shipping, card fees, a per-unit commission. A cost that is a
+                      share of the price takes percent_of_price, with or without a
+                      cost: a card fee of 2.9% + $0.30 is
+                      {"label": "card fees", "percent_of_price": 2.9, "cost": 0.30},
+                      and a what-if price works it out again
     fixed_monthly     [{label, cost}]  costs you pay every month whatever you sell:
                       rent, salaries, software, insurance
     startup           [{label, cost}]  one-off spend before you open
@@ -35,6 +39,7 @@ the price, --volume scales every volume (0.8 = 20 percent fewer sales).
 """
 
 import argparse
+import decimal
 import json
 import math
 import sys
@@ -49,9 +54,26 @@ def _units(n, unit):
     """'1 groom', '2 grooms', '1,500 cups': a count with its unit, singular for one."""
     return "%s %s" % ("{:,.0f}".format(n), unit if n == 1 else unit + "s")
 
+def _exact(v):
+    """A break-even worked out, before it is rounded up to whole units: 1.33, 0.96, 2.5."""
+    return ("{:,.2f}".format(v)).rstrip("0").rstrip(".")
+
+
+def _breakeven(be, unit):
+    """The break-even line's two halves: '1.03 grooms a day on average' and ' (in whole grooms, 2 a day covers it)',
+    or '3 grooms a day' and '' when it is exact. The worked-out figure comes first, so "below that" can only mean it."""
+    whole = math.ceil(be)
+    if abs(be - whole) <= 1e-9:
+        return "%s a day" % _units(whole, unit), ""
+    return ("%s %ss a day on average" % (_exact(be), unit),
+            " (in whole %ss, %s a day covers it)" % (unit, _units(whole, unit)))
+
+
 def _money(v):
+    """Dollars and cents, a half rounded up as a calculator does ($3.055 is $3.06, not $3.05)."""
     sign = "-" if v < 0 else ""
-    return "%s$%s" % (sign, "{:,.2f}".format(abs(v)))
+    cents = decimal.Decimal(repr(round(abs(v), 9))).quantize(decimal.Decimal("0.01"), rounding=decimal.ROUND_HALF_UP)
+    return "%s$%s" % (sign, "{:,.2f}".format(cents))
 
 
 def _whole(v):
@@ -68,6 +90,24 @@ def _sum(items, field):
             total += float(it["cost"])
         except (TypeError, ValueError):
             raise NumbersError("%s[%d].cost is not a number: %r" % (field, i, it["cost"]))
+    return total
+
+
+def unit_cost(it, price):
+    """One variable cost for one unit at this price: its fixed part ('cost') plus its share of the price
+    ('percent_of_price'), so a card fee of 2.9% + $0.30 is worked out again at every what-if price."""
+    return float(it.get("cost") or 0) + price * float(it.get("percent_of_price") or 0) / 100
+
+
+def _sum_variable(items, price):
+    total = 0.0
+    for i, it in enumerate(items or []):
+        if not isinstance(it, dict) or not ("cost" in it or "percent_of_price" in it):
+            raise NumbersError("variable[%d] needs a 'cost', a 'percent_of_price' or both" % i)
+        try:
+            total += unit_cost(it, price)
+        except (TypeError, ValueError):
+            raise NumbersError("variable[%d] is not a number: %r" % (i, it))
     return total
 
 
@@ -89,7 +129,7 @@ def analyse(spec, price=None, volume=1.0):
     if p <= 0:
         raise NumbersError("price must be above zero")
     days = float(spec.get("days_per_month", 30))
-    var = _sum(spec.get("variable"), "variable")
+    var = _sum_variable(spec.get("variable"), p)
     fixed = _sum(spec.get("fixed_monthly"), "fixed_monthly")
     startup = _sum(spec.get("startup"), "startup")
 
@@ -167,17 +207,24 @@ def sensitivity(spec):
     rows.append(("Volume -20%", analyse(spec, volume=0.8)))
     worse = json.loads(json.dumps(spec))
     for it in worse.get("variable", []):
-        it["cost"] = float(it["cost"]) * 1.15
+        for k in ("cost", "percent_of_price"):
+            if it.get(k):
+                it[k] = float(it[k]) * 1.15
     rows.append(("Unit costs +15%", analyse(worse)))
     return rows
 
 
-def report(spec, a):
+def report(spec, a, what_if=None):
+    """what_if names what a --price or --volume run changed, so the report says it is a what-if, not the plan."""
     u = a["unit"]
+    at = "at this what-if" if what_if else "at your plan"
     L = []
     L.append("# Unit economics: %s" % (a["business"] or "your business"))
     L.append("")
     L.append("Every number below comes from the input file. Nothing is looked up or guessed.")
+    if what_if:
+        L.append("")
+        L.append("**This is a what-if: %s.** The plan in the file is unchanged." % what_if)
     L.append("")
     L.append("## One %s" % u)
     L.append("")
@@ -185,7 +232,11 @@ def report(spec, a):
     L.append("| --- | ---: |")
     L.append("| Price | %s |" % _money(a["price"]))
     for it in a["variable_items"]:
-        L.append("| %s | -%s |" % (it.get("label", "cost"), _money(float(it["cost"]))))
+        label = it.get("label", "cost")
+        if it.get("percent_of_price"):
+            label += " (%s%% of the price%s)" % ("%g" % float(it["percent_of_price"]),
+                                                 " + %s" % _money(float(it["cost"])) if it.get("cost") else "")
+        L.append("| %s | -%s |" % (label, _money(unit_cost(it, a["price"]))))
     L.append("| **Contribution** (what each %s leaves to pay the fixed costs) | **%s** (%.0f%%) |"
              % (u, _money(a["contribution"]), a["contribution_pct"] * 100))
     L.append("")
@@ -198,9 +249,9 @@ def report(spec, a):
     if math.isinf(be):
         L.append("- **Break-even: never.** Each %s loses money before rent and salaries." % u)
     else:
-        L.append("- **Break-even: %s a day.** Below that you lose money every month." % _units(math.ceil(be), u))
-    L.append("- **Profit margin at your plan** (%s a day): **%.0f%%** of every sale, after every cost." % (
-        "{:,.0f}".format(a["plan_per_day"]), a["margin_at_plan"] * 100))
+        L.append("- **Break-even: %s.** Below that you lose money every month%s." % _breakeven(be, u))
+    L.append("- **Profit margin %s** (%s a day): **%.0f%%** of every sale, after every cost." % (
+        at, "{:,.0f}".format(a["plan_per_day"]), a["margin_at_plan"] * 100))
     if a["capacity_per_day"] is not None:
         L.append("- Capacity: %s a day." % a["capacity_per_day"])
     L.append("")
@@ -219,12 +270,13 @@ def report(spec, a):
     L.append("")
     L.append("## What if")
     L.append("")
-    L.append("| scenario | margin at plan | break-even a day | year 1 profit |")
+    L.append("| scenario | margin %s | break-even a day, on average | year 1 profit |" % at)
     L.append("| --- | ---: | ---: | ---: |")
     for name, s in sensitivity(spec):
         be = s["breakeven_per_day"]
-        L.append("| %s | %.0f%% | %s | %s |" % (name, s["margin_at_plan"] * 100,
-                                              "never" if math.isinf(be) else "{:,.0f}".format(math.ceil(be)),
+        L.append("| %s | %.0f%% | %s | %s |" % (name if not (what_if and name == "Base plan") else "This what-if",
+                                              s["margin_at_plan"] * 100,
+                                              "never" if math.isinf(be) else _exact(be),
                                               _whole(s["year1_profit"])))
     L.append("")
     if a["flags"]:
@@ -264,7 +316,12 @@ def main(argv=None):
         out["breakeven_per_day"] = None if math.isinf(out["breakeven_per_day"]) else out["breakeven_per_day"]
         print(json.dumps(out, indent=1))
         return 0
-    text = report(spec, a)
+    changed = []
+    if args.price is not None:
+        changed.append("the price at %s" % _money(args.price))
+    if args.volume != 1.0:
+        changed.append("every volume x %s" % ("%g" % args.volume))
+    text = report(spec, a, " and ".join(changed) or None)
     if args.out:
         with open(args.out, "w", encoding="utf-8") as fh:
             fh.write(text)

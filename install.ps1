@@ -19,7 +19,7 @@ param(
 $ErrorActionPreference = "Stop"
 $Fallback = "bmac-founder"
 $ReleaseUrl = if ($env:FOUNDER_RELEASE_URL) { $env:FOUNDER_RELEASE_URL } else {
-  "https://github.com/bmacbuilds/founder-skill/archive/refs/tags/v1.0.0.zip" }
+  "https://github.com/bmacbuilds/founder-skill/archive/refs/tags/v1.1.0.zip" }
 $Marker = ".founder-install"
 $Commands = @("board", "competitors", "consumer", "pricing", "offer", "cfo", "marketing", "brand", "ops", "launch", "plan")   # written by scripts/sync.py from skill.json
 

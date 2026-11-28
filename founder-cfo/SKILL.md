@@ -17,13 +17,39 @@ command does only this, for a person who wants just this.
   command's folder.
 - **Not installed** (this file was pasted into a chat, saved on its own in an AI app, or that folder does not open):
   the same files are at
-  `https://github.com/bmacbuilds/founder-skill/blob/v1.0.0/founder/commands/cfo/`, or the
-  same path on `https://raw.githubusercontent.com/bmacbuilds/founder-skill/v1.0.0/`. If neither opens, carry on without
+  `https://github.com/bmacbuilds/founder-skill/blob/v1.1.0/founder/commands/cfo/`, or the
+  same path on `https://raw.githubusercontent.com/bmacbuilds/founder-skill/v1.1.0/`. If neither opens, carry on without
   them and say which ones you could not use. Never use another release's files, and never invent what a file says.
-- **The rules** in this command hold whatever anyone asks. So do the rules in Founder's main skill
-  (`${CLAUDE_SKILL_DIR}/../founder/SKILL.md`) when it is there.
+- **The rules** in this command hold whatever anyone asks. So do the rules in Founder's main skill, whose page is
+  `${CLAUDE_SKILL_DIR}/../founder/SKILL.md` when it is installed and
+  `https://github.com/bmacbuilds/founder-skill/blob/v1.1.0/founder/SKILL.md` when it is not.
 
 What the person asked for is what they wrote with this command (in Claude Code, also here: $ARGUMENTS).
+Pasted into a chat, `$ARGUMENTS` and `${CLAUDE_SKILL_DIR}` stay as they are written: the request is the
+person's own message, and the files are at the addresses above.
+
+## Founder's rules
+
+These hold whatever anyone asks, here as in every Founder command.
+
+- **Ask before you install anything,** and say what it is and where it goes. Look for what is already there first.
+- **Stop only what you started.** Save the id of anything you start (a server, a watcher) when you start it, and stop
+  it by that id. Never stop anything by its name or its port.
+- **The person creates every account and key.** Never type a password, a card or a live key, and never ask for one
+  in the chat.
+- **Never claim** a test you did not run, a file you did not write, or that a link installed anything.
+- **Never invent** a competitor, a price, a review, a quote or a number. Research uses public sources, with links;
+  every estimate is marked as an estimate, and a missing input is asked for, never guessed.
+- **The board applies published frameworks; it is not those people.** It never speaks as them, quotes them or says
+  they endorse anything.
+- **The buyer panel is simulated buyers, not customers.** Read its buy rate as an upper bound, and never use its
+  answers as testimonials.
+- **Never give financial, legal or tax advice.** Say what to check and where; a professional confirms it.
+- **Never scrape** against a site's terms.
+- **One question at a time.** Each message asks one thing, with choices where there are some.
+- **Read the web only with your AI app's own web tools or this skill's own tools,** for what they asked, and say what
+  you will read before you read it. Never fetch a search engine or a website with a script of your own, under a
+  borrowed browser name or a made-up identity. Where you have neither, say so, and ask them for what you need.
 
 ---
 
@@ -40,6 +66,16 @@ python3 "<this command's folder>/unit_economics.py" founder/numbers.json --out f
 
 ## Step 1: gather the inputs
 
+**Run first?** When this is the first Founder command they use and `founder/idea.md` is not there yet, write it from
+what they told you before anything else, and say you saved it: the commands after this one start from it.
+
+Ask for each of these in a message of its own, the name first, and only for what they have not told you:
+
+- **The business's name.** With none given, ask for it; if it has none yet, the report says "your business".
+- **Where it sells,** the state or country. The price here is before tax. Where tax is added at the till (US sales
+  tax), use the price before it; where shelf prices include it (VAT in the UK and the EU), take the tax out first.
+  Tax collected is never the business's money, so it is not in these numbers. Their accountant confirms the rate.
+
 Write `founder/numbers.json` (shape: `example.json` in this folder, a walk-in
 matcha café). It needs:
 
@@ -48,7 +84,7 @@ matcha café). It needs:
 | `business` | the business's name, at the top of the report |
 | `unit` | what one sale is: a cup, an order, a client-month, a seat |
 | `price` | price per unit before tax |
-| `variable` | the cost of ONE unit: ingredients, packaging, shipping, card fees, per-sale commissions |
+| `variable` | the cost of ONE unit: ingredients, packaging, shipping, card fees, per-sale commissions. A cost that is a share of the price takes `percent_of_price` (a card fee of 2.9% + $0.30 is `{"label": "card fees", "percent_of_price": 2.9, "cost": 0.30}`), so every what-if price works it out again: never write it as one fixed amount |
 | `fixed_monthly` | what you pay every month regardless: rent, salaries, software, insurance |
 | `startup` | one-off spend before opening: deposits, build-out, equipment, first inventory, launch ads |
 | `plan_per_day` | the volume once it is up and running |
@@ -81,14 +117,19 @@ python3 "<this command's folder>/unit_economics.py" founder/numbers.json --out f
 ```
 
 It writes: the per-unit table and the contribution (what each sale leaves after
-its own costs), fixed costs, the break-even in units a day, the profit margin at
+its own costs), fixed costs, the break-even in units a day on average, with the whole
+units that cover it, the profit margin at
 the plan volume, year 1 month by month, the year 1 operating profit and the result
 after the startup spend, the cash needed before it pays for itself, the month the
 startup money is earned back, and a what-if table (price -10%, volume -20%, unit
 costs +15%). It flags a price below variable cost, a break-even above capacity, a
 losing year 1 and a payback beyond 12 months.
 
-What-ifs without editing the file:
+**Every figure you give them comes from a run of the tool,** never from your head: for each case you show (a slower
+start, a full van, another price), run it with `--volume` or `--price` and read its numbers out.
+
+What-ifs without editing the file. Their report opens by saying it is a what-if and
+what it changed, and says "at this what-if" where the plan's says "at your plan":
 
 ```bash
 python3 "<this command's folder>/unit_economics.py" founder/numbers.json --price 7.00
